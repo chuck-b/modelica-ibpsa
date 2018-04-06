@@ -25,8 +25,8 @@ algorithm
   end while;
 
 annotation (Documentation(info="<html>
-<p>Counts the length of the aggregation time vector <code>nu</code> and of the
-weighting factor vectors <code>kappa</code> based on the maximum time for
+<p>Counts the length required to construct the aggregation time vector <code>nu</code> and the
+weighting factor vector <code>kappa</code> by using the maximum time allowed for
 ground temperature response-related calculations.
 </p>
 </html>", revisions="<html>

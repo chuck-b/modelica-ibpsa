@@ -16,7 +16,7 @@ algorithm
 
   annotation (Documentation(info="<html>
 <p>After the cell shifting operation, this function sets the first aggregation
-with the present thermal load value.
+cell with the present thermal load value.
 </p>
 </html>", revisions="<html>
 <ul>

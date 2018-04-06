@@ -1,6 +1,6 @@
 within IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation;
 function timSerMat "Reads and possibly writes a matrix with a time series
-  of the g-function"
+  of the temperature step response"
   extends Modelica.Icons.Function;
   input Integer nbBor "Number of boreholes";
   input Real cooBor[nbBor, 2] "Borehole coordonates";
@@ -74,12 +74,13 @@ This function uses the parameters required to calculate the borefield's thermal
 response to build a pseudo-SHA unique to the borefield in question. Then, if the
 <code>forceGFunCalc</code> parameter has been set to <code>True</code> or if
 there is no .mat file with the pseudo-SHA as its filename in the .BfData folder,
-the g-function will be calculated and written as a .mat file. Otherwise, the
-g-function will simply be read from the .mat file. In the .mat file, the data
+the g-function will be calculated, converted to a temperature step response
+and written as a .mat file. Otherwise, the temperature step response
+will simply be read from the .mat file. In the .mat file, the data
 is saved in a matrix entitled TStep, where the first column is the time (in
 seconds) and the second column is the temperature step response, which is the
-g-function divided by <code>2*&pi;*H*ks</code>, with H being the borehole length
-and ks being the thermal conductivity of the soil.
+g-function divided by <code>2*&pi;*hBor*ks</code>, with <code>hBor</code> being the borehole length
+and <code>ks</code> being the thermal conductivity of the soil.
 </p>
 </html>", revisions="<html>
 <ul>

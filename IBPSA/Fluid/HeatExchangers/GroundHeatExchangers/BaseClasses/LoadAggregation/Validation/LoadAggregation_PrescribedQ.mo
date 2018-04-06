@@ -68,27 +68,29 @@ equation
     annotation (Line(points={{59,-30},{56,-30},{56,-58}}, color={0,0,127}));
   connect(loaAgg.Tg, const.y)
     annotation (Line(points={{-22,10},{-39,10}}, color={0,0,127}));
+
   annotation (experiment(StopTime=630720000),
     Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
 __Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Fluid/HeatExchangers/GroundHeatExchangers/BaseClasses/LoadAggregation/Validation/LoadAggregation_PrescribedQ.mos"
-        "Simulate and plot"));
-  annotation (Documentation(info="<html>
+        "Simulate and plot"),
+              Documentation(info="<html>
 <p>
 This validation case applies the assymetrical synthetic load profile developed
 by Pinel (2003) over a 20 year period by directly injecting the heat at the
 borehole wall in the ground temperature response model. The difference between
-the resulting borehole wall temperature and the same temperature precalculated
-by using a fast Fourier transform is calculated with the <code>add</code>
+the resulting borehole wall temperature calculated in real time during the simulation
+and the same temperature presolved in the spectral domain
+by using a fast Fourier transform is then shown with the <code>add</code>
 component. The fast Fourier transform calculation was done using the same
 g-function as was calculated by the <a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors.gFunction\">
 function used in the ground temperature response model</a>.
 </p>
 <h4>References</h4>
 <p>
-Pinel, P. 2003. <i>Amélioration, validation et implantation d’un algorithme de calcul
-pour évaluer le transfert thermique dans les puits verticaux de systèmes de pompes à chaleur géothermiques</i>,
-M.A.Sc. Thesis, École Polytechnique de Montréal.
+Pinel, P. 2003. <i>Am&eacute;lioration, validation et implantation d’un algorithme de calcul
+pour &eacute;valuer le transfert thermique dans les puits verticaux de syst&egrave;mes de pompes &agrave; chaleur g&eacute;othermiques</i>,
+M.A.Sc. Thesis, &Eacute;cole Polytechnique de Montr&eacute;al.
 </p>
 </html>", revisions="<html>
 <ul>
@@ -98,5 +100,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-
 end LoadAggregation_PrescribedQ;

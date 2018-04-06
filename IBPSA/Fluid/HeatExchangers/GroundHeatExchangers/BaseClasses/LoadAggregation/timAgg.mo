@@ -36,6 +36,9 @@ aggregation time of each cell, and the <code>rcel</code> vector, which
 is the temporal size of each cell normalized with the aggregation step
 length (the <code>lenAggSte</code> parameter).
 </p>
+<p>If, for example, the value of <code>lenAggSte</code> is 3600 seconds (1 hour),
+then any value <code>rcel[x]</code> will be measured in hours.
+</p>
 </html>", revisions="<html>
 <ul>
 <li>

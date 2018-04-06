@@ -160,5 +160,97 @@ equation
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={0,127,255},
             textString="%name")}),                      Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+Documentation(info="<html>
+<p>
+This model calculates the ground temperature response to obtain the temperature
+at the borehole wall in a geothermal system where heat is being injected into or
+extracted from the ground.
+</p>
+<p>
+A load-aggregation scheme based on that developped by Claesson and Javed (2012) is
+used to calculate the borehole wall temperature response with the temporal superposition
+of ground thermal loads. In its base form, the
+load-aggregation scheme involves using fixed-length aggregation cells to agglomerate
+thermal load history together, with more distant cells (denoted with a higher cell and vector index)
+representing more distant thermal history. The more distant the thermal load, the
+less impactful it is on the borehole wall temperature change at the current time step.
+Each cell has an <i>aggregation time</i> associated to it denoted by <code>nu</code>,
+which corresponds to the simulation time (since the beginning of heat injection or
+extraction) at which the cell will begin shifting its thermal load to more distant
+cells. To determine <code>nu</code>, cells have a temporal size <code>rcel</code>
+which follows an exponential growth as shown in the equation below.
+</p>
+<p>
+where <code>p_max</code> is the number of consecutive cells which can have the same size.
+Decreasing its value will generally decrease calculation times, at the cost of some
+precision in the temporal superposition. <code>rcel</code> is thus expressed in multiples
+of whatever aggregation step time is used (via the parameter <code>lenAggSte</code>).
+Then, <code>nu</code> may be expressed as the sum of all <code>rcel</code> values
+(multiplied by the aggregation step time) up to and including that cell in question.
+</p>
+<p>
+To determine the weighting factors <code>kappa</code>, the borefield's temperature
+step response at the borefield wall must be determined as follows.
+</p>
+<p>
+where <code>g</code> is the thermal response factor known as the <i>g-function</i>,
+<code>H</code> is the borehole length and <code>k<sub>s</sub></code> is the thermal
+conductivity of the soil. The weighting factors for a cell <code>i</code> are then expressed as follows.
+</p>
+<p>
+where <code>&nu;</code> refers to the vector <code>nu</code> and <code>T<sub>step</sub>(&nu;<sub>0</sub>)=0</code>.
+</p>
+<p>
+At every aggregation time step, an event is generated to perform the load aggregation steps.
+First, the thermal load is shifted. When shifting between cells of different size, total
+energy is conserved. This operation is illustred in the figure below by Cimmino (2014).
+</p>
+<p>
+When performing the shifting operation, the first cell (which
+is always the most recent in the simulation) is set to zero. After the shifting, its
+value is set with the current load value. Finally, temporal superposition is applied by means
+of a scalar product between the aggregated thermal loads <code>Q_i</code> and the
+weighting factors <code>kappa</code>. 
+</p>
+<p>
+Due to Modelica's variable time steps, the load aggregation scheme is modified by separating
+the thermal response between the current aggregation time step and everything preceding it. 
+</p>
+<p>
+where <code>T<sub>b</sub></code> is the borehole wall temperature, <code>T<sub>g</sub></code>
+is the undisturbed ground temperature equal to the <code>Tg</code> input in this model, 
+<code>Q</code> is the ground thermal load per borehole length and <code>h = g/(2*&pi;*k<sub>s</sub>)</code>
+is a temperature response factor based on the g-function. <code>&Delta;T<sub>b</sub>*(t)</code>
+is thus the borehole wall temperature change due to the thermal history prior to the current
+aggregation step.
+</p>
+<p>
+This validation case applies the assymetrical synthetic load profile developed
+by Pinel (2003) over a 20 year period by directly injecting the heat at the
+borehole wall in the ground temperature response model. The difference between
+the resulting borehole wall temperature calculated in real time during the simulation
+and the same temperature presolved in the spectral domain
+by using a fast Fourier transform is then shown with the <code>add</code>
+component. The fast Fourier transform calculation was done using the same
+g-function as was calculated by the <a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors.gFunction\">
+function used in the ground temperature response model</a>.
+</p>
+<h4>References</h4>
+<p>
+Cimmino, M. 2014. <i>D&eacute;veloppement et validation exp&eacute;rimentale de facteurs de r&eacute;ponse
+thermique pour champs de puits g&eacute;othermiques</i>,
+Ph.D. Thesis, &Eacute;cole Polytechnique de Montr&eacute;al.
+</p>
+<p>
+Claesson, J. and Javed, S. 2012. <i>A load-aggregation method to calculate extraction temperatures of borehole heat exchangers</i>. ASHRAE Transactions 118(1): 530-539.
+</p>
+</html>", revisions="<html>
+<ul>
+<li>
+March 5, 2018, by Alex Laferriere:<br/>
+First implementation.
+</li>
+</ul>
+</html>"));
 end GroundTemperatureResponse;

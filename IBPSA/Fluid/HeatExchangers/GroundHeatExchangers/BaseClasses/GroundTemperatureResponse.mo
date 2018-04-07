@@ -1,6 +1,6 @@
 within IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses;
 model GroundTemperatureResponse "Model calculating discrete load aggregation"
-  parameter Integer p_max(min=1) "Number of cells per aggregation level";
+  parameter Integer p_max(min=1) = 5 "Number of cells per aggregation level";
   parameter Boolean forceGFunCalc = false
     "Set to true to force the thermal response to be calculated at the start";
   replaceable parameter
@@ -190,7 +190,7 @@ Then, <code>nu</code> may be expressed as the sum of all <code>rcel</code> value
 (multiplied by the aggregation step time) up to and including that cell in question.
 </p>
 <p>
-To determine the weighting factors <code>kappa</code>, the borefield's temperature
+To determine the weighting factors <code>kappa</code> (<code>&kappa;</code> in the equation below), the borefield's temperature
 step response at the borefield wall must be determined as follows.
 </p>
 <p>
@@ -215,26 +215,45 @@ weighting factors <code>kappa</code>.
 </p>
 <p>
 Due to Modelica's variable time steps, the load aggregation scheme is modified by separating
-the thermal response between the current aggregation time step and everything preceding it. 
+the thermal response between the current aggregation time step and everything preceding it.
+This is shown in the following equation. 
 </p>
 <p>
 where <code>T<sub>b</sub></code> is the borehole wall temperature, <code>T<sub>g</sub></code>
 is the undisturbed ground temperature equal to the <code>Tg</code> input in this model, 
 <code>Q</code> is the ground thermal load per borehole length and <code>h = g/(2*&pi;*k<sub>s</sub>)</code>
-is a temperature response factor based on the g-function. <code>&Delta;T<sub>b</sub>*(t)</code>
-is thus the borehole wall temperature change due to the thermal history prior to the current
-aggregation step.
+is a temperature response factor based on the g-function.
 </p>
 <p>
-This validation case applies the assymetrical synthetic load profile developed
-by Pinel (2003) over a 20 year period by directly injecting the heat at the
-borehole wall in the ground temperature response model. The difference between
-the resulting borehole wall temperature calculated in real time during the simulation
-and the same temperature presolved in the spectral domain
-by using a fast Fourier transform is then shown with the <code>add</code>
-component. The fast Fourier transform calculation was done using the same
-g-function as was calculated by the <a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors.gFunction\">
-function used in the ground temperature response model</a>.
+<code>&Delta;T<sub>b</sub>*(t)</code>
+is thus the borehole wall temperature change due to the thermal history prior to the current
+aggregation step. At every aggregation time step, load aggregation and temporal superposition
+are used to calculate its discrete value. This term is then assumed to have a linear time
+derivative between its value at the previous discrete time (i.e. the last aggregation time
+step) and the discrete time being calculated. This derivative is then assumed to be
+constant until the next discrete time step. 
+</p>
+<p>
+The second term <code>&Delta;T<sub>b,q</sub>(t)</code> concerns the ongoing aggregation time step.
+To obtain the time derivative of this term, the thermal response factor <code>h</code> is assumed
+to vary linearly over the course of a aggregation time step. Therefore, because
+the ongoing aggregation time step always concerns the first aggregation cell, its derivative (denoted
+by the final parameter <code>dhdt</code> in this model) can be calculated as <code>
+kappa[1]</code>, the first value in the <code>kappa</code> vector, divided by
+the aggregation time step. The derivative of the temperature change at the borehole wall is then expressed
+as the multiplication of <code>dhdt</code> (which only needs to be
+calculated once at the start of the simulation) and the heat flow <code>Q</code> at
+the borehole wall.
+</p>
+<p>
+With the two terms in the expression of <code>&Delta;T<sub>b</sub>*(t)</code> expressed
+as time derivatives, <code>&Delta;T<sub>b</sub>*(t)</code> can itself also be
+expressed as its time derivative as follows.
+</p>
+<p>
+This load aggregation scheme is validated in
+<a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.Validation.LoadAggregation_PrescribedQ\">
+IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.Validation.LoadAggregation_PrescribedQ</a>.
 </p>
 <h4>References</h4>
 <p>

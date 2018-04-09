@@ -3,7 +3,7 @@ model LoadAggregation_PrescribedQ
   "Load aggregation model with a constant prescribed load"
   extends Modelica.Icons.Example;
 
-  GroundTemperatureResponse loaAgg(
+  GroundTemperatureResponse groTem(
     p_max=5,
     bfData(
       redeclare record Soi =
@@ -56,9 +56,9 @@ model LoadAggregation_PrescribedQ
   Modelica.Blocks.Sources.Constant const(k=273.15)
     annotation (Placement(transformation(extent={{-60,0},{-40,20}})));
 equation
-  connect(prescribedHeatFlow.port, loaAgg.Tb)
+  connect(prescribedHeatFlow.port, groTem.Tb)
     annotation (Line(points={{20,10},{0,10}}, color={191,0,0}));
-  connect(temperatureSensor.port, loaAgg.Tb) annotation (Line(points={{20,-30},
+  connect(temperatureSensor.port, groTem.Tb) annotation (Line(points={{20,-30},
           {10,-30},{10,10},{0,10}}, color={191,0,0}));
   connect(temperatureSensor.T, add.u2)
     annotation (Line(points={{40,-30},{44,-30},{44,-58}}, color={0,0,127}));
@@ -66,7 +66,7 @@ equation
     annotation (Line(points={{59,10},{40,10}}, color={0,0,127}));
   connect(timTabT.y[1], add.u1)
     annotation (Line(points={{59,-30},{56,-30},{56,-58}}, color={0,0,127}));
-  connect(loaAgg.Tg, const.y)
+  connect(groTem.Tg, const.y)
     annotation (Line(points={{-22,10},{-39,10}}, color={0,0,127}));
 
   annotation (experiment(StopTime=630720000),
@@ -78,13 +78,34 @@ __Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Fluid/HeatExch
 <p>
 This validation case applies the assymetrical synthetic load profile developed
 by Pinel (2003) over a 20 year period by directly injecting the heat at the
-borehole wall in the ground temperature response model. The difference between
+borehole wall in the
+<a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.GroundTemperatureResponse\">
+ground temperature response model</a>. The difference between
 the resulting borehole wall temperature calculated in real time during the simulation
 and the same temperature presolved in the spectral domain
 by using a fast Fourier transform is then shown with the <code>add</code>
-component. The fast Fourier transform calculation was done using the same
-g-function as was calculated by the <a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors.gFunction\">
-function used in the ground temperature response model</a>.
+component. The fast Fourier transform calculation was done using a
+g-function calculated independently of the functions present in the
+<a href=\"modelica://IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors\">
+IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors</a> package,
+though the same formulas for the FLS, ILS and CHS solutions were used.
+</p>
+<p>
+The single borehole used used in this validation case has the following key characteristics:
+<ul>
+<li>
+<code>H = 100 m</code> <i>(borehole length)</i>
+</li>
+<li>
+<code>r<sub>b</sub> = 0.05 m</code> <i>(borehole radius)</i>
+</li>
+<li>
+<code>k<sub>s</sub> = 1 W/m-K</code> <i>(ground thermal conductivity)</i>
+</li>
+<li>
+<code>&alpha;<sub>s</sub> = 1e-06 m<sup>2</sup>/s</code> <i>(ground thermal diffusivity)</i>
+</li>
+</ul>
 </p>
 <h4>References</h4>
 <p>

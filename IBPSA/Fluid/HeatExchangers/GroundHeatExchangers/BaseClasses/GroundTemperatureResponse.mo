@@ -127,7 +127,8 @@ equation
   end when;
 
   assert((time - t0) <= timFin,
-    "The g-function input file does not cover the entire simulation length.");
+    "The simulation is too lengthy for the thermal response factor
+    calculations");
 
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
@@ -161,6 +162,7 @@ equation
           fillColor={0,127,255},
             textString="%name")}),                      Diagram(
         coordinateSystem(preserveAspectRatio=false)),
+        defaultComponentName="groTem",
 Documentation(info="<html>
 <p>
 This model calculates the ground temperature response to obtain the temperature
@@ -181,8 +183,11 @@ extraction) at which the cell will begin shifting its thermal load to more dista
 cells. To determine <code>nu</code>, cells have a temporal size <code>rcel</code>
 which follows an exponential growth as shown in the equation below.
 </p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_02.png\" />
+</p>
 <p>
-where <code>p_max</code> is the number of consecutive cells which can have the same size.
+where <code>p<sub>max</sub></code> is the number of consecutive cells which can have the same size.
 Decreasing its value will generally decrease calculation times, at the cost of some
 precision in the temporal superposition. <code>rcel</code> is thus expressed in multiples
 of whatever aggregation step time is used (via the parameter <code>lenAggSte</code>).
@@ -193,18 +198,28 @@ Then, <code>nu</code> may be expressed as the sum of all <code>rcel</code> value
 To determine the weighting factors <code>kappa</code> (<code>&kappa;</code> in the equation below), the borefield's temperature
 step response at the borefield wall must be determined as follows.
 </p>
-<p>
-where <code>g</code> is the thermal response factor known as the <i>g-function</i>,
-<code>H</code> is the borehole length and <code>k<sub>s</sub></code> is the thermal
-conductivity of the soil. The weighting factors for a cell <code>i</code> are then expressed as follows.
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_03.png\" />
 </p>
 <p>
-where <code>&nu;</code> refers to the vector <code>nu</code> and <code>T<sub>step</sub>(&nu;<sub>0</sub>)=0</code>.
+where <code>g(t)</code> is the thermal response factor known as the <i>g-function</i>,
+<code>H</code> is the borehole length and <code>k<sub>s</sub></code> is the thermal
+conductivity of the soil. The weighting factors <code>kappa</code> (<code>&kappa;</code> in the equation below)
+for a given cell <code>i</code> are then expressed as follows.
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_04.png\" />
+</p>
+<p>
+where <code>&nu;</code> refers to the vector <code>nu</code> in this model and <code>T<sub>step</sub>(&nu;<sub>0</sub>)=0</code>.
 </p>
 <p>
 At every aggregation time step, an event is generated to perform the load aggregation steps.
 First, the thermal load is shifted. When shifting between cells of different size, total
 energy is conserved. This operation is illustred in the figure below by Cimmino (2014).
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_01.png\" />
 </p>
 <p>
 When performing the shifting operation, the first cell (which
@@ -218,20 +233,28 @@ Due to Modelica's variable time steps, the load aggregation scheme is modified b
 the thermal response between the current aggregation time step and everything preceding it.
 This is shown in the following equation. 
 </p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_05.png\" />
+<br/>
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_06.png\" />
+</p>
 <p>
 where <code>T<sub>b</sub></code> is the borehole wall temperature, <code>T<sub>g</sub></code>
 is the undisturbed ground temperature equal to the <code>Tg</code> input in this model, 
 <code>Q</code> is the ground thermal load per borehole length and <code>h = g/(2*&pi;*k<sub>s</sub>)</code>
-is a temperature response factor based on the g-function.
+is a temperature response factor based on the g-function. <code>t<sub>k</sub></code>
+is the last discrete aggregation time step, meaning that the current time <code>t</code> is
+defined as <code>t<sub>k</sub>&le;t&le;t<sub>k+1</sub></code>.
 </p>
 <p>
 <code>&Delta;T<sub>b</sub>*(t)</code>
 is thus the borehole wall temperature change due to the thermal history prior to the current
 aggregation step. At every aggregation time step, load aggregation and temporal superposition
-are used to calculate its discrete value. This term is then assumed to have a linear time
-derivative between its value at the previous discrete time (i.e. the last aggregation time
-step) and the discrete time being calculated. This derivative is then assumed to be
-constant until the next discrete time step. 
+are used to calculate its discrete value. This term is assumed to have a linear
+time derivative, which is given by the difference between <code>&Delta;T<sub>b</sub>*(t<sub>k+1</sub>)</code>
+(the temperature change from load history at the next discrete aggregation time step, which
+is constant over the duration of the ongoing aggregation time step) and the total
+temperature change at the last aggregation time step, <code>&Delta;T<sub>b</sub>(t)</code>.
 </p>
 <p>
 The second term <code>&Delta;T<sub>b,q</sub>(t)</code> concerns the ongoing aggregation time step.
@@ -240,15 +263,21 @@ to vary linearly over the course of a aggregation time step. Therefore, because
 the ongoing aggregation time step always concerns the first aggregation cell, its derivative (denoted
 by the final parameter <code>dhdt</code> in this model) can be calculated as <code>
 kappa[1]</code>, the first value in the <code>kappa</code> vector, divided by
-the aggregation time step. The derivative of the temperature change at the borehole wall is then expressed
+the aggregation time step <code>&Delta;t</code>. The derivative of the temperature change at the borehole wall is then expressed
 as the multiplication of <code>dhdt</code> (which only needs to be
 calculated once at the start of the simulation) and the heat flow <code>Q</code> at
 the borehole wall.
 </p>
 <p>
-With the two terms in the expression of <code>&Delta;T<sub>b</sub>*(t)</code> expressed
-as time derivatives, <code>&Delta;T<sub>b</sub>*(t)</code> can itself also be
-expressed as its time derivative as follows.
+With the two terms in the expression of <code>&Delta;T<sub>b</sub>(t)</code> expressed
+as time derivatives, <code>&Delta;T<sub>b</sub>(t)</code> can itself also be
+expressed as its time derivative and implemented as such directly in the Modelica
+equations block with the <code>der()</code> operator.
+</p>
+<p align=\"center\">
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_07.png\" />
+<br/>
+<img alt=\"image\" src=\"modelica://IBPSA/Resources/Images/Fluid/HeatExchangers/GroundHeatExchangers/LoadAggregation_08.png\" />
 </p>
 <p>
 This load aggregation scheme is validated in

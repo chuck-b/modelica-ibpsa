@@ -65,7 +65,7 @@ temperature step reponse (a time-series in the form of a matrix) of the borefiel
 </html>", revisions="<html>
 <ul>
 <li>
-March 5, 2018, by Alex Laferriere:<br/>
+April 5, 2018, by Alex Laferriere:<br/>
 First implementation.
 </li>
 </ul>

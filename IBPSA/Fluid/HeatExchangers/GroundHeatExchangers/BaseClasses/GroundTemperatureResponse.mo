@@ -22,7 +22,7 @@ protected
   parameter Integer nbTimSho = 26 "Number of time steps in short time region";
   parameter Integer nbTimLon = 50 "Number of time steps in long time region";
   parameter Real ttsMax = exp(5) "Maximum adimensional time for gfunc calculation";
-  parameter String SHAgfun = ThermalResponseFactors.shaGFunction(
+  parameter String SHAgfun = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFactors.shaGFunction(
     nbBor=bfData.gen.nbBh,
     cooBor=bfData.gen.cooBh,
     hBor=bfData.gen.hBor,
@@ -34,13 +34,13 @@ protected
   parameter Real lvlBas = 2 "Base for exponential cell growth between levels";
   parameter Modelica.SIunits.Time timFin=
     (bfData.gen.hBor^2/(9*bfData.soi.alp))*ttsMax;
-  parameter Integer i = LoadAggregation.countAggPts(
+  parameter Integer i = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.countAggPts(
     lvlBas=lvlBas,
     p_max=p_max,
     timFin=timFin,
     lenAggSte=bfData.gen.tStep) "Number of aggregation points";
   parameter Real timSer[nrow+1, 2]=
-    LoadAggregation.timSerMat(
+    IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.timSerMat(
     nbBor=bfData.gen.nbBh,
     cooBor=bfData.gen.cooBh,
     hBor=bfData.gen.hBor,
@@ -81,7 +81,7 @@ initial equation
   Q_shift = Q_i;
   delTbs = 0;
 
-  (nu,rCel) = LoadAggregation.timAgg(
+  (nu,rCel) = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.timAgg(
     i=i,
     lvlBas=lvlBas,
     p_max=p_max,
@@ -90,7 +90,7 @@ initial equation
 
   t0 = time;
 
-  kappa = LoadAggregation.kapAgg(
+  kappa = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.kapAgg(
     i=i,
     nrow=nrow,
     TStep=timSer,
@@ -103,19 +103,19 @@ equation
   deltaTb = Tb.T-Tg;
 
   when (sample(t0, bfData.gen.tStep)) then
-    (curCel,Q_shift) = LoadAggregation.nextTimeStep(
+    (curCel,Q_shift) = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.nextTimeStep(
       i=i,
       Q_i=pre(Q_i),
       rCel=rCel,
       nu=nu,
       curTim=(time - t0));
 
-    Q_i = LoadAggregation.setCurLoa(
+    Q_i = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.setCurLoa(
       i=i,
       Qb=Tb.Q_flow,
       Q_shift=Q_shift);
 
-    delTbs = LoadAggregation.tempSuperposition(
+    delTbs = IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.tempSuperposition(
       i=i,
       Q_i=Q_shift,
       kappa=kappa,
@@ -203,7 +203,7 @@ step response at the borefield wall must be determined as follows.
 </p>
 <p>
 where <code>g(t)</code> is the thermal response factor known as the <i>g-function</i>,
-<code>H</code> is the borehole length and <code>k<sub>s</sub></code> is the thermal
+<code>H</code> is the total length of all boreholes and <code>k<sub>s</sub></code> is the thermal
 conductivity of the soil. The weighting factors <code>kappa</code> (<code>&kappa;</code> in the equation below)
 for a given cell <code>i</code> are then expressed as follows.
 </p>
@@ -296,7 +296,7 @@ Claesson, J. and Javed, S. 2012. <i>A load-aggregation method to calculate extra
 </html>", revisions="<html>
 <ul>
 <li>
-March 5, 2018, by Alex Laferriere:<br/>
+April 5, 2018, by Alex Laferriere:<br/>
 First implementation.
 </li>
 </ul>

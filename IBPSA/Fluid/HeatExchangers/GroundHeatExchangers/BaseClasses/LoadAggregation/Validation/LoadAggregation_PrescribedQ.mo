@@ -91,7 +91,7 @@ IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.ThermalResponseFacto
 though the same formulas for the FLS, ILS and CHS solutions were used.
 </p>
 <p>
-The single borehole used used in this validation case has the following key characteristics:
+The single borehole used in this validation case has the following key characteristics:
 <ul>
 <li>
 <code>H = 100 m</code> <i>(borehole length)</i>
@@ -116,7 +116,7 @@ M.A.Sc. Thesis, &Eacute;cole Polytechnique de Montr&eacute;al.
 </html>", revisions="<html>
 <ul>
 <li>
-March 5, 2018, by Alex Laferriere:<br/>
+April 5, 2018, by Alex Laferriere:<br/>
 First implementation.
 </li>
 </ul>

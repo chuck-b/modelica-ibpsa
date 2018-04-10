@@ -52,7 +52,7 @@ algorithm
     matrix[1,2] := 0;
     for i in 1:nrow loop
       matrix[i+1,1] := Modelica.Math.exp(lntts[i])*ts;
-      matrix[i+1,2] := gFun[i]/(2*Modelica.Constants.pi*hBor*ks);
+      matrix[i+1,2] := gFun[i]/(2*Modelica.Constants.pi*hBor*nbBor*ks);
     end for;
 
     writegFun := writeMatrix(
@@ -85,7 +85,7 @@ and <code>ks</code> being the thermal conductivity of the soil.
 </html>", revisions="<html>
 <ul>
 <li>
-March 5, 2018, by Alex Laferriere:<br/>
+April 5, 2018, by Alex Laferriere:<br/>
 First implementation.
 </li>
 </ul>

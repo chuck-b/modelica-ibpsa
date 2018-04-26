@@ -1,5 +1,5 @@
 ﻿within IBPSA.Fluid.HeatExchangers.GroundHeatExchangers.BaseClasses.LoadAggregation.Validation;
-model LoadAggregation_PrescribedQ
+model LoadAggregation_SmallTimeStep
   "Load aggregation model with a constant prescribed load"
   extends Modelica.Icons.Example;
 
@@ -69,10 +69,10 @@ equation
   connect(groTem.Tg, const.y)
     annotation (Line(points={{-22,10},{-39,10}}, color={0,0,127}));
 
-  annotation (experiment(tolerance=1e-6, StopTime=6.3072e+08, outputInterval=3600),
+  annotation (experiment(tolerance=1e-6, StopTime=6.3072e+08, outputInterval=2000),
     Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
-__Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Fluid/HeatExchangers/GroundHeatExchangers/BaseClasses/LoadAggregation/Validation/LoadAggregation_PrescribedQ.mos"
+__Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Fluid/HeatExchangers/GroundHeatExchangers/BaseClasses/LoadAggregation/Validation/LoadAggregation_SmallTimeStep.mos"
         "Simulate and plot"),
               Documentation(info="<html>
 <p>
@@ -121,4 +121,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-end LoadAggregation_PrescribedQ;
+end LoadAggregation_SmallTimeStep;

@@ -1,5 +1,5 @@
 within IBPSA.Media;
-package SecondaryFluid "Medium packages of secondary working fluids"
+package Antifreeze "Medium packages of secondary working fluids"
 
 
 
@@ -11,4 +11,4 @@ applications. The media models in this package assume that thermophysical
 properties are constant.
 </p>
 </html>"));
-end SecondaryFluid;
+end Antifreeze;

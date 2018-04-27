@@ -1,10 +1,10 @@
-within IBPSA.Media.SecondaryFluid.Validation;
+within IBPSA.Media.Antifreeze.Validation;
 model PropyleneGlycolWater
   "Model that tests the implementation of propylene glycol-water properties"
   extends Modelica.Icons.Example;
-  extends IBPSA.Media.SecondaryFluid.Validation.BaseClasses.FluidProperties(
+  extends IBPSA.Media.Antifreeze.Validation.BaseClasses.FluidProperties(
     redeclare package Medium =
-        IBPSA.Media.SecondaryFluid.PropyleneGlycolWater (
+        IBPSA.Media.Antifreeze.PropyleneGlycolWater (
       property_T=300,
       massFraction=0.05),
     n=7,
@@ -13,7 +13,7 @@ model PropyleneGlycolWater
     T_max=373.15);
 
    annotation(experiment(Tolerance=1e-6, StopTime=1.0),
-__Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Media/SecondaryFluid/Validation/PropyleneGlycolWater.mos"
+__Dymola_Commands(file="modelica://IBPSA/Resources/Scripts/Dymola/Media/Antifreeze/Validation/PropyleneGlycolWater.mos"
         "Simulate and plot"),
       Documentation(info="<html>
 <p>

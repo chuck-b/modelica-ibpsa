@@ -85,7 +85,7 @@ def plot_relative_error(c, dT):
     
     for i in range(len(c)):
         Tf = propyleneGlycol_FusionTemperature(c[i], 0)
-        T = np.linspace(Tf, 100, num=200)
+        T = np.linspace(Tf+dT, 100-dT, num=200)
         # Density
         rho = np.array([propyleneGlycol_Density(c[i], T[j]) for j in range(len(T))])
         rhop = np.array([propyleneGlycol_Density(c[i], min(T[j]+dT, 100)) for j in range(len(T))])
@@ -134,7 +134,7 @@ def plot_relative_error(c, dT):
     ax2.grid(ls=':')
     ax3.grid(ls=':')
     # Legend
-    ax3.legend(loc='upper right', fontsize=8, framealpha=0)
+    ax3.legend(loc='upper right', fontsize=6, framealpha=0)
     # Adjust to plot window
     plt.tight_layout()
     

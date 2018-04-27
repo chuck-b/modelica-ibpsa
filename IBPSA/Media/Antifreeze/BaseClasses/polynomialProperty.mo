@@ -1,4 +1,4 @@
-within IBPSA.Media.SecondaryFluid.BaseClasses;
+within IBPSA.Media.Antifreeze.BaseClasses;
 function polynomialProperty
   "Evaluates thermophysical property from 2-variable polynomial"
   extends Modelica.Icons.Function;
@@ -49,8 +49,8 @@ IIR/IIF.
 March 16, 2018 by Massimo Cimmino:<br/>
 First implementation.
 This function is used models in
-<a href=\"modelica://IBPSA.Media.SecondaryFluid\">
-IBPSA.Media.SecondaryFluid</a>.
+<a href=\"modelica://IBPSA.Media.Antifreeze\">
+IBPSA.Media.Antifreeze</a>.
 </li>
 </ul>
 </html>"));

@@ -1,4 +1,4 @@
-within IBPSA.Media.SecondaryFluid.PropyleneGlycolWater.BaseClasses;
+within IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses;
 function specificHeatCapacityCp
   "Evaluate specific heat capacity of propylene glycol - water"
   extends Modelica.Icons.Function;
@@ -18,7 +18,7 @@ protected
 
 algorithm
 
-  cp := IBPSA.Media.SecondaryFluid.BaseClasses.polynomialProperty(
+  cp := IBPSA.Media.Antifreeze.BaseClasses.polynomialProperty(
     w*100,
     Modelica.SIunits.Conversions.to_degC(T),
     wm,
@@ -44,8 +44,8 @@ IIR/IIF.
 March 16, 2018 by Massimo Cimmino:<br/>
 First implementation.
 This function is used by
-<a href=\"modelica://IBPSA.Media.SecondaryFluid.PropyleneGlycolWater\">
-IBPSA.Media.SecondaryFluid.PropyleneGlycolWater</a>.
+<a href=\"modelica://IBPSA.Media.Antifreeze.PropyleneGlycolWater\">
+IBPSA.Media.Antifreeze.PropyleneGlycolWater</a>.
 </li>
 </ul>
 </html>"));

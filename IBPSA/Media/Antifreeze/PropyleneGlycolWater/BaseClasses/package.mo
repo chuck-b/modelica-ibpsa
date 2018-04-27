@@ -1,4 +1,4 @@
-within IBPSA.Media.SecondaryFluid.PropyleneGlycolWater;
+within IBPSA.Media.Antifreeze.PropyleneGlycolWater;
 package BaseClasses "Property evaluation functions for propylene glycol - water"
 extends Modelica.Icons.BasesPackage;
 

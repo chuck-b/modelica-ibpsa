@@ -3,7 +3,7 @@ model PropyleneGlycolWaterDerivativeCheck
   "Model that tests the derivative implementation"
   extends Modelica.Icons.Example;
 
-   package Medium = IBPSA.Media.SecondaryFluid.PropyleneGlycolWater (
+   package Medium = IBPSA.Media.Antifreeze.PropyleneGlycolWater (
       massFraction=0.60,
       property_T=293.15);
 

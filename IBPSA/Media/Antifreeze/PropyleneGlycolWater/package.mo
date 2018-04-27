@@ -1,4 +1,4 @@
-within IBPSA.Media.SecondaryFluid;
+within IBPSA.Media.Antifreeze;
 package PropyleneGlycolWater "Package with model for propylene glycol - water with constant properties"
   extends Modelica.Icons.VariantsPackage;
 
@@ -22,13 +22,13 @@ package PropyleneGlycolWater "Package with model for propylene glycol - water wi
 
   extends Modelica.Media.Interfaces.PartialSimpleMedium(
     mediumName="SimplePropyleneGlycolWater",
-    final cp_const=BaseClasses.specificHeatCapacityCp(massFraction,property_T),
+    final cp_const=IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses.specificHeatCapacityCp(massFraction,property_T),
     final cv_const=cp_const,
-    final d_const=BaseClasses.density(massFraction,property_T),
-    final eta_const=BaseClasses.dynamicViscosity(massFraction,property_T),
-    final lambda_const=BaseClasses.thermalConductivity(massFraction,property_T),
+    final d_const=IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses.density(massFraction,property_T),
+    final eta_const=IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses.dynamicViscosity(massFraction,property_T),
+    final lambda_const=IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses.thermalConductivity(massFraction,property_T),
     a_const=1484,
-    final T_min=BaseClasses.fusionTemperature(massFraction,property_T),
+    final T_min=IBPSA.Media.Antifreeze.PropyleneGlycolWater.BaseClasses.fusionTemperature(massFraction,property_T),
     final T_max=Modelica.SIunits.Conversions.from_degC(100),
     T0=273.15,
     MM_const=(massFraction/0.07609+(1-massFraction)/0.018015268)^(-1),
@@ -112,6 +112,7 @@ required from medium model \"" + mediumName + "\".
 </html>"));
   end BaseProperties;
 
+
                        annotation(preferredView="info", Documentation(info="<html>
 <p>
 This medium package models propylene glycol - water mixtures.
@@ -123,7 +124,7 @@ propylene glycol within the mixture. The dependence of the four properties
 are shown on the figure below.
 </p>
 <p align=\"center\">
-<img src=\"modelica://IBPSA/Resources/Images/Media/SecondaryFluid/PropyleneGlycolWaterProperties.png\" border=\"1\"
+<img src=\"modelica://IBPSA/Resources/Images/Media/Antifreeze/PropyleneGlycolWaterProperties.png\" border=\"1\"
 alt=\"Relative variation of specific heat capacity with temperature\"/>
 </p>
 <p>
@@ -136,7 +137,7 @@ for specific heat capacity, <i>3.2</i> % for thermal conductivity and <i>250</i>
 % for dynamic viscosity.
 </p>
 <p align=\"center\">
-<img src=\"modelica://IBPSA/Resources/Images/Media/SecondaryFluid/PropyleneGlycolWaterError10degC.png\" border=\"1\"
+<img src=\"modelica://IBPSA/Resources/Images/Media/Antifreeze/PropyleneGlycolWaterError10degC.png\" border=\"1\"
 alt=\"Relative variation of specific heat capacity with temperature\"/>
 </p>
 <p>
@@ -147,7 +148,7 @@ for specific heat capacity, <i>6.2</i> % for thermal conductivity and <i>950</i>
 % for dynamic viscosity.
 </p>
 <p align=\"center\">
-<img src=\"modelica://IBPSA/Resources/Images/Media/SecondaryFluid/PropyleneGlycolWaterError20degC.png\" border=\"1\"
+<img src=\"modelica://IBPSA/Resources/Images/Media/Antifreeze/PropyleneGlycolWaterError20degC.png\" border=\"1\"
 alt=\"Relative variation of specific heat capacity with temperature\"/>
 </p>
 <p>
@@ -170,7 +171,7 @@ constant thermophysical properties. A typical use of the package is (e.g. for
 a temperature of <i>20</i> &deg;C and a mass fraction of <i>0.40</i>):
 </p>
 <p>
-<code>Medium = IBPSA.Media.SecondaryFluid.PropyleneGlycolWater(property_T=293.15, massFraction=0.40)</code>
+<code>Medium = IBPSA.Media.Antifreeze.PropyleneGlycolWater(property_T=293.15, massFraction=0.40)</code>
 </p>
 </html>", revisions="<html>
 <ul>
@@ -180,5 +181,4 @@ First implementation.
 </li>
 </ul>
 </html>"));
-
 end PropyleneGlycolWater;
